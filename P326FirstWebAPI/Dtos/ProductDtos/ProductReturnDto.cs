@@ -1,12 +1,10 @@
-﻿namespace P326FirstWebAPI.Models
+﻿namespace P326FirstWebAPI.Dtos.ProductDtos
 {
-    public class Product:BaseEntity
+    public class ProductReturnDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public double SalePrice { get; set; }
         public double CostPrice { get; set; }
         public bool IsActive { get; set; }
-        public bool IsDelete { get;set; }
     }
 }

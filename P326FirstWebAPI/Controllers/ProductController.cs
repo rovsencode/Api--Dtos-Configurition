@@ -19,18 +19,41 @@ namespace P326FirstWebAPI.Controllers
         public IActionResult GetAll()
         {
             var products = _appDbContext.Products.ToList();  
+            ProductListDto productListDto = new();
+            productListDto.TotalCount = products.Count;
+            List<ProductListItemDto> productListItemDtos = new();
+            foreach (var item in products)
+            {
+                ProductListItemDto productListItemDto = new();
+                productListItemDto.Name = item.Name;
+                productListItemDto.CostPrice= item.CostPrice;
+                productListItemDto.SalePrice= item.SalePrice;
+                productListItemDto.CreatedTime= item.CreatedDate;
+                productListItemDto.UpdateTime = item.UpdateDate;
+                productListItemDtos.Add(productListItemDto);
+
+
+            }
+            productListDto.productListItemDtos= productListItemDtos;
+
+
             return Ok(products);
         }
         [Route("getOne")]
         [HttpGet]
         public IActionResult GetOne(int id)
         {
-            Product product = _appDbContext.Products.FirstOrDefault(p => p.Id == id);
+            Product product = _appDbContext.Products.Where(p=>p.IsDelete).FirstOrDefault(p => p.Id == id);
             if (product == null) return StatusCode(StatusCodes.Status404NotFound);
-            return Ok(product);
-            {
+            ProductReturnDto productReturnDto = new() {
+                Name=product.Name,
+                CostPrice=product.CostPrice ,
+                SalePrice=product.SalePrice ,
+                IsActive=product.IsActive ,
+            };
 
-            }
+            return Ok(productReturnDto);
+           
         }
         [HttpPost]
         public IActionResult AddProduct(ProductCreatedDto productCreatedDto)
