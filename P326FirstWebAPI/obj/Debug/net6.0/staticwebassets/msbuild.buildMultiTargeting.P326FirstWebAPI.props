@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\P326FirstWebAPI.props" />
+</Project>
